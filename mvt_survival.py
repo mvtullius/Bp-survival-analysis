@@ -269,6 +269,8 @@ def kmf_fit_group(df_, group):
 def get_stats_from_kmf(group, kmf_fit):
     '''get_stats_from_kmf returns a Pandas Dataframe with nicely formatted statistics from a Kaplan Meier fit (lifelines package) for a selected group.'''
     
+    columns = ['final_survival', 'upper_0.95', 'lower_0.95', 'median_survival_time']
+    
     return (
         kmf_fit.confidence_interval_
         .iloc[-1]
@@ -279,7 +281,8 @@ def get_stats_from_kmf(group, kmf_fit):
         .assign(median_survival_time=kmf_fit.median_survival_time_)
         .assign(Group=group)
         .set_index('Group')
-    )
+    )[columns]
+
 
 def create_kmf_survival_figure(df, ax, groups=None):
     '''Return a matplotlib figure using kmf.plot_survival_function.
